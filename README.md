@@ -1,4 +1,5 @@
 # YouTube-Time-Summary
+![image](https://github.com/HSBL-ko-gyo/YouTube-Time-Summary/assets/128065816/3b544dae-1947-4dfc-b7a9-bf13f4bfde82)
 
 ## 概要
 
