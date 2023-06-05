@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+
+<h1>時間計算</h1>
+
+<button onclick="resetTime()">リセット</button>
+
+<table id="timeTable">
+  <tr>
+    <th>行番号</th>
+    <th>時間</th>
+  </tr>
+</table>
+
+<form onsubmit="event.preventDefault(); addTime();">
+    <input type="text" id="timeInput" placeholder="分:秒">
+    <button type="submit">時間を追加</button>
+</form>
+
+<p id="totalTime"></p>
+
+<script>
+var times = [];
+
+function addTime() {
+    var timeInput = document.getElementById("timeInput");
+    var timeTable = document.getElementById("timeTable");
+    
+    // 入力が空の場合は追加しない
+    if (timeInput.value === '') {
+        return;
+    }
+
+    // 分と秒に分ける
+    var parts = timeInput.value.split(':');
+    var minutes = parseInt(parts[0]);
+    var seconds = parts[1] ? parseInt(parts[1]) : 0;  // 秒がない場合は0に設定
+
+    // 入力された時間（秒）を配列に追加
+    times.push(minutes * 60 + seconds);
+    
+    // テーブルに新しい行を追加
+    var newRow = timeTable.insertRow(-1);
+    var cell1 = newRow.insertCell(0);
+    var cell2 = newRow.insertCell(1);
+
+    // 行番号と時間をセルに追加
+    cell1.textContent = timeTable.rows.length - 1; // ヘッダー行を除く
+    cell2.textContent = minutes + "分" + seconds + "秒";
+    
+    // 入力フィールドをクリア
+    timeInput.value = '';
+
+    // カーソルを入力フィールドに移動
+    timeInput.focus();
+
+    // 合計時間を更新
+    calculateTotal();
+}
+
+function resetTime() {
+    var timeTable = document.getElementById("timeTable");
+    var totalTime = document.getElementById("totalTime");
+
+    // テーブルと時間配列をリセット
+    while(timeTable.rows.length > 1) {
+        timeTable.deleteRow(1);
+    }
+    times = [];
+
+    // 合計時間表示をリセット
+    totalTime.textContent = '';
+}
+
+function calculateTotal() {
+    var totalSeconds = times.reduce((a, b) => a + b, 0);
+    
+    var totalMinutes = Math.floor(totalSeconds / 60);
+    var remainingSeconds = totalSeconds % 60;
+    
+    var totalTime = document.getElementById("totalTime");
+    totalTime.textContent = "合計時間: " + totalMinutes + "分" + remainingSeconds + "秒";
+}
+</script>
+
+</body>
+</html>
